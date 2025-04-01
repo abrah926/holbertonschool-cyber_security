@@ -1,3 +1,3 @@
 #!/bin/bash
-read -n "$1" pass < <(tr -dc '[:alnum:]' < /dev/urandom )
-echo "$pass"
+head -c "$1" < <(tr -dc '[:alnum:]' < /dev/urandom)
+
