@@ -1,2 +1,2 @@
 #!/bin/bash
-subfinder -d "$1" | while read subdomain; do echo -n "$subdomain,"; dig +short "$subdomain" | head -n 1; done > "$1.txt"
+subfinder -d $1 -nW -oI | awk -F, '{print $1 "," $2}'
