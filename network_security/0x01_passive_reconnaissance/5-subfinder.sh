@@ -1,2 +1,2 @@
 #!/bin/bash
-subfinder -d $1 -nW -oI | awk -F, '{print $1 "," $2}'
+subfinder -d $1 -nW -oI | awk -F, '{print $1 "," $2}' > "$1.txt"
