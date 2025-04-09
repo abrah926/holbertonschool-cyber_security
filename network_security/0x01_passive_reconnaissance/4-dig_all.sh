@@ -1,3 +1,2 @@
 #!/bin/bash
-dig -type=any +answer $1
-
+dig $1 q-any +noall +answer
