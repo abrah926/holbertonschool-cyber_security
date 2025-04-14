@@ -1,1 +1,1 @@
-/product/8
+/product
