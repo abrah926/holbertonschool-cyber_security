@@ -1,1 +1,1 @@
-udp and udp.lenght == 0 and udp.dstport
+udp and udp.dstport == 7
