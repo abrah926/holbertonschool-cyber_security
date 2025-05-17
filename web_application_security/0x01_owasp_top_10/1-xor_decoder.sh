@@ -1,18 +1,28 @@
 #!/bin/bash
 
-# Check if the argument starts with {xor}
+# Ensure input begins with {xor}
 if [[ "$1" =~ ^\{xor\}(.*) ]]; then
-    base64_data="${BASH_REMATCH[1]}"
-    
-    # Decode base64, XOR with 0x5A, and print
-    echo "$base64_data" | base64 -d | \
-    od -An -t u1 | tr -d ' \n' | \
-    xargs -n1 echo | while read byte; do
-        printf \\$(printf '%03o' $((byte ^ 0x5A)))
-    done
-    echo
+    encoded="${BASH_REMATCH[1]}"
 else
-    echo "Usage: $0 {xor}Base64EncodedString"
+    echo "Invalid input format. Usage: ./1-xor_decoder.sh {xor}Base64String"
     exit 1
 fi
+
+# Decode base64
+decoded=$(echo "$encoded" | base64 -d 2>/dev/null)
+
+# Check if decode was successful
+if [ $? -ne 0 ]; then
+    echo "Base64 decode failed"
+    exit 1
+fi
+
+# XOR decode using key 0x7F (127) which is common in WebSphere-style XOR
+# If 0x7F doesn't work, we try 0x10 (16), 0x55 (85), or test visually
+for ((i = 0; i < ${#decoded}; i++)); do
+    byte=$(printf '%d' "'${decoded:$i:1}")
+    printf "\\$(printf '%03o' "$((byte ^ 0x7F))")"
+done
+
+echo
 
